@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shorts Communication Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --secondary: #5b21b6;
+            --accent: #8b5cf6;
+            --dark: #0f0f23;
+            --darker: #090914;
+            --light: #e2e8f0;
+            --text: #f8fafc;
+            --text-muted: #cbd5e1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --online: #10b981;
+            --offline: #6b7280;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--darker);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li a i {
+            margin-right: 0.5rem;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #7c3aed;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+        }
+        
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            color: var(--accent);
+        }
+        
+        .card {
+            background-color: var(--darker);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #1e1e3f;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1e1e3f;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--text);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .alert {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            color: #d1fae5;
+            background-color: #065f46;
+            border-color: #047857;
+        }
+        
+        .alert-danger {
+            color: #fecaca;
+            background-color: #7f1d1d;
+            border-color: #b91c1c;
+        }
+        
+        .alert-warning {
+            color: #fef3c7;
+            background-color: #92400e;
+            border-color: #d97706;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        
+        table th, table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #374151;
+        }
+        
+        table th {
+            background-color: #1e1e3f;
+            font-weight: 600;
+        }
+        
+        .user-count {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .chat-container {
+            display: flex;
+            height: 500px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .users-list {
+            width: 25%;
+            background-color: #1e1e3f;
+            border-right: 1px solid #374151;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            padding: 1rem;
+            border-bottom: 1px solid #374151;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-item:hover, .user-item.active {
+            background-color: #2d2d5a;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            flex-grow: 1;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .user-status {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .status-online {
+            background-color: var(--online);
+        }
+        
+        .status-offline {
+            background-color: var(--offline);
+        }
+        
+        .chat-area {
+            width: 75%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .messages-container {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #1a1a2e;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+        
+        .message.sent {
+            background-color: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message.received {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+        }
+        
+        .message-image {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .message-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #374151;
+            background-color: #1e1e3f;
+        }
+        
+        .message-input input {
+            flex-grow: 1;
+            margin-right: 1rem;
+        }
+        
+        .file-upload {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        footer {
+            background-color: var(--darker);
+            color: var(--text-muted);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+        }
+        
+        .admin-panel {
+            background-color: #1e1e3f;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--darker);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #374151;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .login-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--darker);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid #374151;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .notifications-panel {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 300px;
+            background-color: var(--darker);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            z-index: 10;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .notification-content {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--offline);
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+        
+        .image-preview {
+            max-width: 200px;
+            margin-top: 1rem;
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .remove-preview {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: var(--darker);
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            border: 1px solid #374151;
+            position: relative;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--danger);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+                height: 600px;
+            }
+            
+            .users-list {
+                width: 100%;
+                height: 30%;
+                border-right: none;
+                border-bottom: 1px solid #374151;
+            }
+            
+            .chat-area {
+                width: 100%;
+                height: 70%;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin-left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">Shorts<span>Comm</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" id="nav-chat"><i class="fas fa-comments"></i> Chat</a></li>
+                    <li><a href="#" id="nav-profile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="nav-admin" class="hidden"><i class="fas fa-cog"></i> Admin Panel</a></li>
+                    <li>
+                        <a href="#" id="nav-notifications">
+                            <i class="fas fa-bell"></i> Notifications
+                            <span class="notification-badge hidden" id="notification-count">0</span>
+                        </a>
+                        <div class="notifications-panel hidden" id="notifications-panel">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                    </li>
+                    <li><a href="#" id="nav-login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="#" id="nav-logout" class="hidden"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Home Section -->
+        <section id="home-section">
+            <h1 class="section-title">Welcome to Shorts Communication Platform</h1>
+            <div class="card">
+                <h2>Connect with People</h2>
+                <p>Our platform allows you to communicate with up to 5000 users in a secure environment. Create an account to get started!</p>
+                <div class="user-count">Current Users: <span id="user-count">0</span>/5000</div>
+                <div class="alert alert-warning">
+                    <strong>Important:</strong> Please fill in true information when creating your account. If you forget your account details, you'll need to create a new account.
+                </div>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Users</div>
+                        <div class="stat-value" id="active-users">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Messages Today</div>
+                        <div class="stat-value" id="messages-today">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Online Now</div>
+                        <div class="stat-value" id="online-now">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">New Users This Week</div>
+                        <div class="stat-value" id="new-users-week">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login-section" class="hidden">
+            <div class="login-container">
+                <h2 class="login-title">Login to Your Account</h2>
+                <div class="alert alert-danger hidden" id="login-error"></div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="#" id="show-register" style="color: var(--accent);">Register here</a></p>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register-section" class="hidden">
+            <div class="login-container">
+                <h2 class="login-title">Create New Account</h2>
+                <div class="alert alert-danger hidden" id="register-error"></div>
+                <div class="alert alert-warning">
+                    <strong>Note:</strong> Please fill in true information. If you forget your account details, you won't be able to recover your account.
+                </div>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">Already have an account? <a href="#" id="show-login" style="color: var(--accent);">Login here</a></p>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat-section" class="hidden">
+            <h2 class="section-title">Chat with Users</h2>
+            <div class="card">
+                <div class="chat-container">
+                    <div class="users-list" id="users-list">
+                        <!-- Users will be populated here -->
+                    </div>
+                    <div class="chat-area">
+                        <div class="chat-header" id="chat-with">Select a user to start chatting</div>
+                        <div class="messages-container" id="messages-container">
+                            <!-- Messages will be populated here -->
+                        </div>
+                        <div class="message-input">
+                            <div class="file-upload">
+                                <input type="file" id="image-upload" accept="image/*">
+                                <label for="image-upload" class="btn"><i class="fas fa-image"></i></label>
+                            </div>
+                            <input type="text" id="message-input" placeholder="Type your message..." disabled>
+                            <button class="btn btn-primary" id="send-message" disabled>Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="hidden">
+            <h2 class="section-title">Your Profile</h2>
+            <div class="card">
+                <div class="form-group">
+                    <label for="profile-name">Full Name</label>
+                    <input type="text" id="profile-name" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="profile-email">Email</label>
+                    <input type="email" id="profile-email" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="profile-password">New Password (leave blank to keep current)</label>
+                    <input type="password" id="profile-password">
+                </div>
+                <button class="btn btn-primary" id="update-profile">Update Profile</button>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin-section" class="hidden">
+            <h2 class="section-title">Admin Panel</h2>
+            <div class="admin-panel">
+                <h3>Welcome, Admin</h3>
+                <p>You have full control over the platform and its users.</p>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="view-users">View All Users</button>
+                    <button class="btn btn-danger" id="delete-user">Delete User</button>
+                    <button class="btn btn-success" id="send-announcement">Send Announcement</button>
+                    <button class="btn btn-primary" id="view-online-users">Online Users</button>
+                    <button class="btn btn-primary" id="view-offline-users">Offline Users</button>
+                </div>
+            </div>
+            
+            <div class="card hidden" id="users-table-container">
+                <h3>All Users</h3>
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Last Active</th>
+                            <th>Registration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Users will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card hidden" id="announcement-container">
+                <h3>Send Announcement</h3>
+                <div class="form-group">
+                    <label for="announcement-title">Title</label>
+                    <input type="text" id="announcement-title">
+                </div>
+                <div class="form-group">
+                    <label for="announcement-message">Message</label>
+                    <textarea id="announcement-message" rows="5"></textarea>
+                </div>
+                <button class="btn btn-primary" id="send-announcement-btn">Send to All Users</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Shorts Communication Platform. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div class="modal hidden" id="image-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <img src="" alt="Shared image" class="modal-image" id="modal-image">
+        </div>
+    </div>
+
+    <script>
+        // Admin credentials (SECRET - not visible to users)
+        const ADMIN_USERNAME = 'josue04';
+        const ADMIN_EMAIL = 'tuyishimejosue0001@gmail.com';
+        const ADMIN_PASSWORD = 'Irwanda700';
+        
+        // Application state
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+        let selectedChatUser = null;
+        let selectedImage = null;
+        
+        // Initialize the application
+        function init() {
+            console.log('Initializing application...');
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    console.log('User already logged in:', currentUser.name);
+                    showAppInterface();
+                } catch (e) {
+                    console.error('Error parsing saved user:', e);
+                    localStorage.removeItem('currentUser');
+                }
+            }
+            
+            // Check if admin user exists, if not create it
+            const adminExists = users.some(user => user.email === ADMIN_EMAIL);
+            if (!adminExists) {
+                console.log('Creating admin user...');
+                const adminUser = {
+                    id: 9999,
+                    name: 'Admin User',
+                    email: ADMIN_EMAIL,
+                    password: ADMIN_PASSWORD,
+                    isAdmin: true,
+                    registrationDate: new Date().toISOString(),
+                    lastActive: new Date().toISOString(),
+                    online: true,
+                    active: true
+                };
+                users.push(adminUser);
+                saveUsers();
+                console.log('Admin user created successfully');
+            } else {
+                console.log('Admin user already exists');
+            }
+            
+            updateUserCount();
+            setupEventListeners();
+            
+            if (!currentUser) {
+                showSection('home-section');
+            }
+            
+            checkNotifications();
+        }
+        
+        // Save users to localStorage
+        function saveUsers() {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+        
+        // Save messages to localStorage
+        function saveMessages() {
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+        
+        // Save notifications to localStorage
+        function saveNotifications() {
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        }
+        
+        // Save current user to localStorage
+        function saveCurrentUser() {
+            if (currentUser) {
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+        }
+        
+        // Update user count display
+        function updateUserCount() {
+            const activeUsers = users.filter(user => user.active).length;
+            const onlineUsers = users.filter(user => user.online && user.active).length;
+            
+            // Only show user count to admin
+            if (currentUser && currentUser.isAdmin) {
+                document.getElementById('user-count').textContent = activeUsers;
+                document.getElementById('active-users').textContent = activeUsers;
+            } else {
+                document.getElementById('user-count').textContent = 'Hidden';
+                document.getElementById('active-users').textContent = 'Hidden';
+            }
+            
+            document.getElementById('online-now').textContent = onlineUsers;
+            document.getElementById('messages-today').textContent = getMessagesToday();
+            document.getElementById('new-users-week').textContent = getNewUsersThisWeek();
+        }
+        
+        // Update online status for current user
+        function updateOnlineStatus() {
+            if (currentUser) {
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].lastActive = new Date().toISOString();
+                    users[userIndex].online = true;
+                    saveUsers();
+                }
+            }
+        }
+        
+        // Get messages sent today
+        function getMessagesToday() {
+            const today = new Date().toDateString();
+            return messages.filter(msg => new Date(msg.timestamp).toDateString() === today).length;
+        }
+        
+        // Get new users this week
+        function getNewUsersThisWeek() {
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            return users.filter(user => new Date(user.registrationDate) > oneWeekAgo).length;
+        }
+        
+        // Check and update notifications
+        function checkNotifications() {
+            if (!currentUser) return;
+            
+            const unreadNotifications = notifications.filter(notification => 
+                !notification.readBy.includes(currentUser.id) && 
+                notification.targetUserId !== currentUser.id
+            );
+            
+            const notificationCount = document.getElementById('notification-count');
+            if (unreadNotifications.length > 0) {
+                notificationCount.textContent = unreadNotifications.length;
+                notificationCount.classList.remove('hidden');
+            } else {
+                notificationCount.classList.add('hidden');
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            document.getElementById('nav-home').addEventListener('click', () => showSection('home-section'));
+            document.getElementById('nav-chat').addEventListener('click', () => {
+                if (currentUser) {
+                    loadUsersList();
+                    showSection('chat-section');
+                } else {
+                    showSection('login-section');
+                }
+            });
+            document.getElementById('nav-profile').addEventListener('click', () => {
+                if (currentUser) {
+                    loadProfile();
+                    showSection('profile-section');
+                } else {
+                    showSection('login-section');
+                }
+            });
+            document.getElementById('nav-admin').addEventListener('click', () => showSection('admin-section'));
+            document.getElementById('nav-login').addEventListener('click', () => showSection('login-section'));
+            document.getElementById('nav-logout').addEventListener('click', logout);
+            
+            // Notifications
+            document.getElementById('nav-notifications').addEventListener('click', toggleNotifications);
+            
+            // Login/Register
+            document.getElementById('show-register').addEventListener('click', () => showSection('register-section'));
+            document.getElementById('show-login').addEventListener('click', () => showSection('login-section'));
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+            
+            // Chat
+            document.getElementById('send-message').addEventListener('click', sendMessage);
+            document.getElementById('message-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Image upload
+            document.getElementById('image-upload').addEventListener('change', handleImageUpload);
+            
+            // Profile
+            document.getElementById('update-profile').addEventListener('click', updateProfile);
+            
+            // Admin
+            document.getElementById('view-users').addEventListener('click', viewAllUsers);
+            document.getElementById('delete-user').addEventListener('click', deleteUser);
+            document.getElementById('send-announcement').addEventListener('click', showAnnouncementForm);
+            document.getElementById('send-announcement-btn').addEventListener('click', sendAnnouncement);
+            document.getElementById('view-online-users').addEventListener('click', viewOnlineUsers);
+            document.getElementById('view-offline-users').addEventListener('click', viewOfflineUsers);
+            
+            // Modal
+            document.getElementById('close-modal').addEventListener('click', closeImageModal);
+            document.getElementById('image-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'image-modal') {
+                    closeImageModal();
+                }
+            });
+            
+            // Update online status every minute
+            setInterval(updateOnlineStatus, 60000);
+            
+            // Check for inactive users every 2 minutes
+            setInterval(checkInactiveUsers, 120000);
+        }
+        
+        // Show app interface when logged in
+        function showAppInterface() {
+            if (currentUser) {
+                showSection('home-section');
+                updateUserCount();
+                checkNotifications();
+            }
+        }
+        
+        // Show a specific section and hide others
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('main > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show the requested section
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Update navigation based on login status
+            if (currentUser) {
+                document.getElementById('nav-login').classList.add('hidden');
+                document.getElementById('nav-logout').classList.remove('hidden');
+                
+                if (currentUser.isAdmin) {
+                    document.getElementById('nav-admin').classList.remove('hidden');
+                } else {
+                    document.getElementById('nav-admin').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('nav-login').classList.remove('hidden');
+                document.getElementById('nav-logout').classList.add('hidden');
+                document.getElementById('nav-admin').classList.add('hidden');
+            }
+            
+            // Hide notifications panel when switching sections
+            document.getElementById('notifications-panel').classList.add('hidden');
+        }
+        
+        // Toggle notifications panel
+        function toggleNotifications(e) {
+            e.preventDefault();
+            const panel = document.getElementById('notifications-panel');
+            panel.classList.toggle('hidden');
+            
+            if (!panel.classList.contains('hidden')) {
+                loadNotifications();
+                
+                // Mark notifications as read
+                if (currentUser) {
+                    notifications.forEach(notification => {
+                        if (!notification.readBy.includes(currentUser.id)) {
+                            notification.readBy.push(currentUser.id);
+                        }
+                    });
+                    saveNotifications();
+                    checkNotifications();
+                }
+            }
+        }
+        
+        // Load notifications into the panel
+        function loadNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            panel.innerHTML = '';
+            
+            if (notifications.length === 0) {
+                panel.innerHTML = '<div class="notification-item">No notifications</div>';
+                return;
+            }
+            
+            // Show latest notifications first
+            const sortedNotifications = [...notifications].sort((a, b) => 
+                new Date(b.timestamp) - new Date(a.timestamp)
+            );
+            
+            sortedNotifications.forEach(notification => {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = 'notification-item';
+                
+                notificationItem.innerHTML = `
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-content">${notification.content}</div>
+                    <div class="notification-time">${formatTime(notification.timestamp)}</div>
+                `;
+                
+                panel.appendChild(notificationItem);
+            });
+        }
+        
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.email === email && u.password === password && u.active);
+            
+            if (user) {
+                currentUser = user;
+                
+                // Update user's online status
+                const userIndex = users.findIndex(u => u.id === user.id);
+                if (userIndex !== -1) {
+                    users[userIndex].online = true;
+                    users[userIndex].lastActive = new Date().toISOString();
+                    saveUsers();
+                }
+                
+                // Save user to localStorage for persistence
+                saveCurrentUser();
+                
+                showAppInterface();
+                clearForm('login-form');
+                document.getElementById('login-error').classList.add('hidden');
+                checkNotifications();
+                
+                console.log('Login successful:', user.name);
+            } else {
+                document.getElementById('login-error').textContent = 'Invalid email or password. Please try again.';
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+        
+        // Handle registration
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                document.getElementById('register-error').textContent = 'Passwords do not match.';
+                document.getElementById('register-error').classList.remove('hidden');
+                return;
+            }
+            
+            // Check if user already exists
+            if (users.some(u => u.email === email)) {
+                document.getElementById('register-error').textContent = 'An account with this email already exists.';
+                document.getElementById('register-error').classList.remove('hidden');
+                return;
+            }
+            
+            // Check if we've reached the user limit
+            if (users.filter(u => u.active).length >= 5000) {
+                document.getElementById('register-error').textContent = 'Sorry, the platform has reached its maximum user limit.';
+                document.getElementById('register-error').classList.remove('hidden');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                name,
+                email,
+                password,
+                isAdmin: false,
+                registrationDate: new Date().toISOString(),
+                lastActive: new Date().toISOString(),
+                online: true,
+                active: true
+            };
+            
+            users.push(newUser);
+            saveUsers();
+            currentUser = newUser;
+            
+            // Save user to localStorage for persistence
+            saveCurrentUser();
+            
+            showAppInterface();
+            updateUserCount();
+            clearForm('register-form');
+            document.getElementById('register-error').classList.add('hidden');
+            checkNotifications();
+            
+            // Create welcome notification
+            createNotification(
+                'Welcome to Shorts Communication!',
+                `Hello ${name}, welcome to our platform. Start connecting with other users now!`,
+                newUser.id
+            );
+        }
+        
+        // Logout
+        function logout() {
+            if (currentUser) {
+                // Update user's online status
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].online = false;
+                    saveUsers();
+                }
+            }
+            
+            currentUser = null;
+            selectedChatUser = null;
+            
+            // Remove user from localStorage
+            localStorage.removeItem('currentUser');
+            
+            showSection('home-section');
+            updateUserCount();
+        }
+        
+        // Clear form fields
+        function clearForm(formId) {
+            document.getElementById(formId).reset();
+        }
+        
+        // Load users list for chat
+        function loadUsersList() {
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+            
+            // Filter users based on current user role
+            let otherUsers;
+            if (currentUser.isAdmin) {
+                // Admin can see all users except themselves
+                otherUsers = users.filter(user => user.id !== currentUser.id && user.active);
+            } else {
+                // Regular users can only see other regular users (not admin)
+                otherUsers = users.filter(user => 
+                    user.id !== currentUser.id && 
+                    user.active && 
+                    !user.isAdmin
+                );
+            }
+            
+            if (otherUsers.length === 0) {
+                usersList.innerHTML = '<div class="user-item">No other users available</div>';
+                return;
+            }
+            
+            otherUsers.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                userItem.dataset.userId = user.id;
+                
+                const avatarText = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                userItem.innerHTML = `
+                    <div class="user-avatar">${avatarText}</div>
+                    <div class="user-info">
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-status">
+                            <span class="status-indicator ${user.online ? 'status-online' : 'status-offline'}"></span>
+                            ${user.online ? 'Online' : 'Offline'}
+                        </div>
+                    </div>
+                `;
+                
+                userItem.addEventListener('click', () => selectUserForChat(user));
+                usersList.appendChild(userItem);
+            });
+        }
+        
+        // Select a user for chatting
+        function selectUserForChat(user) {
+            selectedChatUser = user;
+            
+            // Update UI
+            document.querySelectorAll('.user-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.user-item[data-user-id="${user.id}"]`).classList.add('active');
+            
+            document.getElementById('chat-with').textContent = `Chat with ${user.name}`;
+            document.getElementById('message-input').disabled = false;
+            document.getElementById('send-message').disabled = false;
+            
+            // Load messages
+            loadMessages(user.id);
+        }
+        
+        // Load messages between current user and selected user
+        function loadMessages(otherUserId) {
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.innerHTML = '';
+            
+            const userMessages = messages.filter(msg => 
+                (msg.senderId === currentUser.id && msg.receiverId === otherUserId) ||
+                (msg.senderId === otherUserId && msg.receiverId === currentUser.id)
+            ).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+            if (userMessages.length === 0) {
+                messagesContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No messages yet. Start the conversation!</p>';
+                return;
+            }
+            
+            userMessages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.senderId === currentUser.id ? 'sent' : 'received'}`;
+                
+                if (msg.type === 'text') {
+                    messageDiv.textContent = msg.content;
+                } else if (msg.type === 'image') {
+                    let html = '';
+                    if (msg.content) {
+                        html = `<div>${msg.content}</div>`;
+                    }
+                    html += `<img src="${msg.imageData}" alt="Shared image" class="message-image" data-image="${msg.imageData}">`;
+                    messageDiv.innerHTML = html;
+                    
+                    // Add click event to image for preview
+                    const img = messageDiv.querySelector('.message-image');
+                    img.addEventListener('click', () => openImageModal(msg.imageData));
+                }
+                
+                messagesContainer.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Handle image upload
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                selectedImage = event.target.result;
+                
+                // Create a preview with remove button
+                const previewContainer = document.createElement('div');
+                previewContainer.style.position = 'relative';
+                previewContainer.style.display = 'inline-block';
+                
+                const preview = document.createElement('img');
+                preview.src = selectedImage;
+                preview.className = 'image-preview';
+                
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-preview';
+                removeButton.innerHTML = '×';
+                removeButton.addEventListener('click', () => {
+                    previewContainer.remove();
+                    selectedImage = null;
+                });
+                
+                previewContainer.appendChild(preview);
+                previewContainer.appendChild(removeButton);
+                
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.appendChild(previewContainer);
+                
+                // Scroll to show the preview
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Clear the file input
+                e.target.value = '';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Send a message
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const content = messageInput.value.trim();
+            
+            if (!content && !selectedImage) return;
+            
+            let messageType = 'text';
+            let imageData = null;
+            
+            if (selectedImage) {
+                messageType = 'image';
+                imageData = selectedImage;
+                
+                // Remove preview
+                const preview = document.querySelector('.image-preview');
+                if (preview) preview.parentElement.remove();
+            }
+            
+            const newMessage = {
+                id: messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1,
+                senderId: currentUser.id,
+                receiverId: selectedChatUser.id,
+                content: content || '',
+                type: messageType,
+                imageData: imageData,
+                timestamp: new Date().toISOString()
+            };
+            
+            messages.push(newMessage);
+            saveMessages();
+            
+            // Add to UI
+            const messagesContainer = document.getElementById('messages-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message sent';
+            
+            if (messageType === 'text') {
+                messageDiv.textContent = content;
+            } else {
+                let html = '';
+                if (content) {
+                    html = `<div>${content}</div>`;
+                }
+                html += `<img src="${imageData}" alt="Shared image" class="message-image" data-image="${imageData}">`;
+                messageDiv.innerHTML = html;
+                
+                // Add click event to image for preview
+                const img = messageDiv.querySelector('.message-image');
+                img.addEventListener('click', () => openImageModal(imageData));
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            
+            // Clear input and reset selected image
+            messageInput.value = '';
+            selectedImage = null;
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            updateUserCount();
+            
+            // Create notification for the receiver
+            if (selectedChatUser) {
+                createNotification(
+                    'New Message',
+                    `${currentUser.name} sent you a ${messageType === 'text' ? 'message' : 'image'}`,
+                    selectedChatUser.id
+                );
+            }
+        }
+        
+        // Open image in modal
+        function openImageModal(imageData) {
+            document.getElementById('modal-image').src = imageData;
+            document.getElementById('image-modal').classList.remove('hidden');
+        }
+        
+        // Close image modal
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+        
+        // Load profile data
+        function loadProfile() {
+            document.getElementById('profile-name').value = currentUser.name;
+            document.getElementById('profile-email').value = currentUser.email;
+        }
+        
+        // Update profile
+        function updateProfile() {
+            const newPassword = document.getElementById('profile-password').value;
+            
+            if (newPassword) {
+                currentUser.password = newPassword;
+                
+                // Update in users array
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    saveUsers();
+                }
+                
+                document.getElementById('profile-password').value = '';
+                
+                alert('Profile updated successfully!');
+            } else {
+                alert('No changes made.');
+            }
+        }
+        
+        // Create a notification
+        function createNotification(title, content, targetUserId = null) {
+            const newNotification = {
+                id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1,
+                title,
+                content,
+                targetUserId,
+                timestamp: new Date().toISOString(),
+                readBy: []
+            };
+            
+            notifications.push(newNotification);
+            saveNotifications();
+            
+            // Update notification badge for all users
+            users.forEach(user => {
+                if (user.online && user.id !== currentUser.id) {
+                    checkNotifications();
+                }
+            });
+        }
+        
+        // Format time for display
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+        
+        // Check for inactive users (offline for more than 5 minutes)
+        function checkInactiveUsers() {
+            const fiveMinutesAgo = new Date();
+            fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+            
+            users.forEach(user => {
+                if (user.online && new Date(user.lastActive) < fiveMinutesAgo) {
+                    user.online = false;
+                }
+            });
+            
+            saveUsers();
+            updateUserCount();
+        }
+        
+        // Admin: View all users
+        function viewAllUsers() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            const container = document.getElementById('users-table-container');
+            const tableBody = document.querySelector('#users-table tbody');
+            
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                // Hide admin email from the table
+                const displayEmail = user.isAdmin ? '*****@*****' : user.email;
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${displayEmail}</td>
+                    <td>${user.online ? '<span style="color: var(--online);">Online</span>' : '<span style="color: var(--offline);">Offline</span>'}</td>
+                    <td>${formatTime(user.lastActive)}</td>
+                    <td>${new Date(user.registrationDate).toLocaleDateString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            container.classList.remove('hidden');
+            document.getElementById('announcement-container').classList.add('hidden');
+        }
+        
+        // Admin: View online users
+        function viewOnlineUsers() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            const container = document.getElementById('users-table-container');
+            const tableBody = document.querySelector('#users-table tbody');
+            
+            tableBody.innerHTML = '';
+            
+            const onlineUsers = users.filter(user => user.online && user.active);
+            
+            onlineUsers.forEach(user => {
+                const row = document.createElement('tr');
+                // Hide admin email from the table
+                const displayEmail = user.isAdmin ? '*****@*****' : user.email;
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${displayEmail}</td>
+                    <td><span style="color: var(--online);">Online</span></td>
+                    <td>${formatTime(user.lastActive)}</td>
+                    <td>${new Date(user.registrationDate).toLocaleDateString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            container.classList.remove('hidden');
+            document.getElementById('announcement-container').classList.add('hidden');
+        }
+        
+        // Admin: View offline users
+        function viewOfflineUsers() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            const container = document.getElementById('users-table-container');
+            const tableBody = document.querySelector('#users-table tbody');
+            
+            tableBody.innerHTML = '';
+            
+            const offlineUsers = users.filter(user => !user.online && user.active);
+            
+            offlineUsers.forEach(user => {
+                const row = document.createElement('tr');
+                // Hide admin email from the table
+                const displayEmail = user.isAdmin ? '*****@*****' : user.email;
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${displayEmail}</td>
+                    <td><span style="color: var(--offline);">Offline</span></td>
+                    <td>${formatTime(user.lastActive)}</td>
+                    <td>${new Date(user.registrationDate).toLocaleDateString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            container.classList.remove('hidden');
+            document.getElementById('announcement-container').classList.add('hidden');
+        }
+        
+        // Admin: Delete user
+        function deleteUser() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            const email = prompt('Enter the email of the user to delete:');
+            
+            if (!email) return;
+            
+            const userIndex = users.findIndex(u => u.email === email);
+            
+            if (userIndex === -1) {
+                alert('User not found.');
+                return;
+            }
+            
+            if (users[userIndex].isAdmin) {
+                alert('Cannot delete admin user.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete user: ${users[userIndex].name}?`)) {
+                users[userIndex].active = false;
+                saveUsers();
+                updateUserCount();
+                alert('User deleted successfully.');
+            }
+        }
+        
+        // Admin: Show announcement form
+        function showAnnouncementForm() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            document.getElementById('users-table-container').classList.add('hidden');
+            document.getElementById('announcement-container').classList.remove('hidden');
+        }
+        
+        // Admin: Send announcement
+        function sendAnnouncement() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('Access denied. Admin only.');
+                return;
+            }
+            
+            const title = document.getElementById('announcement-title').value;
+            const message = document.getElementById('announcement-message').value;
+            
+            if (!title || !message) {
+                alert('Please fill in both title and message.');
+                return;
+            }
+            
+            // Create notification for all users
+            users.forEach(user => {
+                if (user.active && user.id !== currentUser.id) {
+                    createNotification(title, message, user.id);
+                }
+            });
+            
+            alert('Announcement sent to all users successfully!');
+            
+            // Clear form
+            document.getElementById('announcement-title').value = '';
+            document.getElementById('announcement-message').value = '';
+        }
+        
+        // Initialize the application when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
